@@ -1,5 +1,11 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}My Blog{% endblock title %}
+
+{% block css_files %}
+<link rel="stylesheet" href="{% static 'blog/index.css' %}"/>
+{% endblock css_files %}
+
 {% block content %}
     <header>
         <a href="">Suresh' Blog</a>
@@ -9,7 +15,7 @@
     </header>
     <section>
         <header>
-            <img src="" alt="">
+            <img src="{% static 'blog/images/face.jpg' %}" alt="" width="250px">
             <h2>Suresh' Blog</h2>
         </header>
         <p>Hi, I am Suresh and I love to blog About Python</p>
