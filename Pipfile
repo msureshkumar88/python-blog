@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 django = "*"
+djlint = "*"
 
 [dev-packages]
 autopep8 = "*"
