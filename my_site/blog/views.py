@@ -8,7 +8,7 @@ def index(request):
 
 
 def posts(request):
-    pass
+    return render(request, "blog/posts.html")
 
 
 def post_details(request):
