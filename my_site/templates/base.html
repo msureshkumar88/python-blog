@@ -15,9 +15,9 @@
     </head>
     <body>
         <header>
-            <a href="">Suresh' Blog</a>
+            <a href="{% url 'home-page' %}">Suresh' Blog</a>
             <nav>
-                <a href="">All Posts</a>
+                <a href="{% url 'posts-page' %}">All Posts</a>
             </nav>
         </header>
         {% block content %}
