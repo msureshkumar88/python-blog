@@ -1,10 +1,13 @@
 from django.shortcuts import render
-
+from .models import Post
 
 # Create your views here.
 
 def index(request):
-    return render(request, "blog/index.html")
+    latest_post = Post.objects.all().order_by("-date")[:3]
+    return render(request, "blog/index.html", {
+        "posts": latest_post
+    })
 
 
 def posts(request):
@@ -14,4 +17,3 @@ def posts(request):
 def post_details(request, slug):
     return render(request, "blog/post-details.html")
 
-# 5.10
