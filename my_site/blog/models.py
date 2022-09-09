@@ -8,6 +8,10 @@ from django.core.validators import MinLengthValidator
 class Tag(models.Model):
     caption = models.CharField(max_length=20)
 
+    def __str__(self) :
+        return self.caption
+
+
 
 class Author(models.Model):
     first_name = models.CharField(max_length=100)
