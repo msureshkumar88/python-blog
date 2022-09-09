@@ -3,6 +3,7 @@ from .models import Post
 
 # Create your views here.
 
+
 def index(request):
     latest_post = Post.objects.all().order_by("-date")[:3]
     return render(request, "blog/index.html", {
@@ -11,9 +12,11 @@ def index(request):
 
 
 def posts(request):
-    return render(request, "blog/posts.html")
+    posts = Post.objects.all().order_by("-date")
+    return render(request, "blog/posts.html", {
+        "posts": posts
+    })
 
 
 def post_details(request, slug):
     return render(request, "blog/post-details.html")
-
