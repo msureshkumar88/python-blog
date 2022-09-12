@@ -26,4 +26,17 @@
     <main>
         {{ post.content|linebreaks }}
     </main>
+    <div>
+        <form action="{% url 'post-details-page' post.slug %}" method="post">
+            {% csrf_token %}
+            {% for field in comment_form %}
+            <div class="form-control {% if form_field.errors %}invalid{% endif %}">
+                {{ field.label_tag }}
+                {{ field }}
+                {{ field.error }}
+            </div>
+            {% endfor %}
+            <button type="submit">Comment</button>
+        </form>
+    </div>
 {% endblock content %}
