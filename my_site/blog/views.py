@@ -4,7 +4,7 @@ from django.views.generic import ListView
 # Create your views here.
 
 
-class Index(ListView):
+class IndexView(ListView):
     template_name = "blog/index.html"
     model = Post
     ordering = ["-date"]
