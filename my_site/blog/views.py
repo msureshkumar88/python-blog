@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Post
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 # Create your views here.
 
 
@@ -15,12 +15,16 @@ class IndexView(ListView):
         return queryset[:3]
 
 
-def posts(request):
-    posts = Post.objects.all().order_by("-date")
-    return render(request, "blog/posts.html", {
-        "posts": posts
-    })
+class PostsView(ListView):
+    template_name = "blog/posts.html"
+    model = Post
+    ordering = ["-date"]
+    context_object_name = "posts"
 
+
+class PostDetailsView(DetailView):
+    template_name = "blog/post-details.html"
+    model = Post
 
 def post_details(request, slug):
     post = get_object_or_404(Post, slug=slug)
