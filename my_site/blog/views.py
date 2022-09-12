@@ -33,7 +33,7 @@ class PostDetailsView(View):
             "post": post,
             "tags": post.tags.all(),
             "comment_form": CommentForm(),
-            "comments" : post.comments.all().order_by("-id")
+            "comments": post.comments.all().order_by("-id")
         }
         return render(request, "blog/post-details.html", context)
 
@@ -46,11 +46,40 @@ class PostDetailsView(View):
             comment.post = post
             comment.save()
             return HttpResponseRedirect(reverse("post-details-page", args=[slug]))
-        
+
         context = {
             "post": post,
             "tags": post.tags.all(),
             "comment_form": comment_form,
-            "comments" : post.comments.all().order_by("-id")
+            "comments": post.comments.all().order_by("-id")
         }
         return render(request, "blog/post-details.html", context)
+
+
+class ReadLaterView(View):
+
+    def get(self, request):
+        stored_posts  = request.session.get("stored_posts")
+        context = {}
+        print(stored_posts)
+        if stored_posts is None or len(stored_posts) == 0:
+            context["posts"]  = []
+            context["has_posts"]  = False
+        else:
+            context["posts"] = Post.objects.filter(id__in=stored_posts)
+            context["has_posts"] = True        
+        return render(request, "blog/stored-posts.html", context)
+
+    def post(self, request):
+        stored_posts = request.session.get("stored_posts")
+
+        if stored_posts is None:
+            stored_posts = []
+        post_id = int(request.POST["post_id"])
+
+        if post_id not in stored_posts:
+            stored_posts.append(post_id)
+            request.session["stored_posts"] = stored_posts
+        print(stored_posts)
+        return HttpResponseRedirect("/")
+
