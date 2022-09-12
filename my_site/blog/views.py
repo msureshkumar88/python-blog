@@ -27,13 +27,20 @@ class PostsView(ListView):
 
 
 class PostDetailsView(View):
+    def is_stored_post(self, request, post_id):
+        stored_posts = request.session.get("stored_posts")
+        if stored_posts is not None:
+            return post_id in stored_posts
+        return False
+
     def get(self, request, slug):
         post = Post.objects.get(slug=slug)
         context = {
             "post": post,
             "tags": post.tags.all(),
             "comment_form": CommentForm(),
-            "comments": post.comments.all().order_by("-id")
+            "comments": post.comments.all().order_by("-id"),
+            "saved_for_later": self.is_stored_post(request, post.id)
         }
         return render(request, "blog/post-details.html", context)
 
@@ -51,7 +58,8 @@ class PostDetailsView(View):
             "post": post,
             "tags": post.tags.all(),
             "comment_form": comment_form,
-            "comments": post.comments.all().order_by("-id")
+            "comments": post.comments.all().order_by("-id"),
+            "saved_for_later": self.is_stored_post(request, post.id)
         }
         return render(request, "blog/post-details.html", context)
 
@@ -59,15 +67,14 @@ class PostDetailsView(View):
 class ReadLaterView(View):
 
     def get(self, request):
-        stored_posts  = request.session.get("stored_posts")
+        stored_posts = request.session.get("stored_posts")
         context = {}
-        print(stored_posts)
         if stored_posts is None or len(stored_posts) == 0:
-            context["posts"]  = []
-            context["has_posts"]  = False
+            context["posts"] = []
+            context["has_posts"] = False
         else:
             context["posts"] = Post.objects.filter(id__in=stored_posts)
-            context["has_posts"] = True        
+            context["has_posts"] = True
         return render(request, "blog/stored-posts.html", context)
 
     def post(self, request):
@@ -79,7 +86,8 @@ class ReadLaterView(View):
 
         if post_id not in stored_posts:
             stored_posts.append(post_id)
-            request.session["stored_posts"] = stored_posts
-        print(stored_posts)
-        return HttpResponseRedirect("/")
+        else:
+            stored_posts.remove(post_id)
+        request.session["stored_posts"] = stored_posts
 
+        return HttpResponseRedirect("/")
