@@ -1,14 +1,18 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Post
-
+from django.views.generic import ListView
 # Create your views here.
 
 
-def index(request):
-    latest_post = Post.objects.all().order_by("-date")[:3]
-    return render(request, "blog/index.html", {
-        "posts": latest_post
-    })
+class Index(ListView):
+    template_name = "blog/index.html"
+    model = Post
+    ordering = ["-date"]
+    context_object_name = "posts"
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset[:3]
 
 
 def posts(request):
