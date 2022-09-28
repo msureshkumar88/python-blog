@@ -91,3 +91,6 @@ class ReadLaterView(View):
         request.session["stored_posts"] = stored_posts
 
         return HttpResponseRedirect("/")
+
+def about(request):
+    return render(request, "blog/about.html")
