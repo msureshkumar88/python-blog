@@ -1,5 +1,5 @@
 {% load static %}
-<li>
+<!-- <li>
     <article>
         <a href="{% url 'post-details-page' post.slug %}">
             <img src="{{ post.image.url }}" alt="" style="width:150px">
@@ -9,4 +9,27 @@
             </div>
         </a>
     </article>
-</li>
+</li> -->
+
+<div class="post-preview">
+    
+    <a href="{% url 'post-details-page' post.slug %}">
+        <h2 class="post-title">{{ post.title }}</h2>
+        <div class="row">
+            <div class="col-md-3" style="margin-right: 0;">
+                <img src="{{ post.image.url }}" alt="" style="width:150px">
+            </div>
+            <div class="col-md-9">
+                <p class="post-subtitle">{{ post.excerpt }}</p>
+            </div>
+        </div>
+        
+    </a>
+    <p class="post-meta">
+        Posted by
+        <a href="#!">{{ post.author.first_name | capfirst }}</a>
+        on {{ post.date }}
+    </p>
+</div>
+<!-- Divider-->
+<hr class="my-4" />
