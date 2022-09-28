@@ -54,7 +54,7 @@
         </ul>
     </section>
     <div>
-        <h2>Submin Your Comment</h2>
+        <h2>Submit Your Comment</h2>
         <form action="{% url 'post-details-page' post.slug %}" method="post">
             {% csrf_token %}
             {% for field in comment_form %}
